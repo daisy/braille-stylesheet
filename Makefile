@@ -50,9 +50,6 @@ bana.css :
 get-latest-bana-css :
 	$(MAKE) -B bana.css
 
-valentin-hauy.epub :
-	curl -L "https://dl.daisy.org/samples/epub/$(notdir $@)" >$@
-
 .PHONY : clean
 clean :
 	rm -rf result
