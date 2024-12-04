@@ -1,0 +1,37 @@
+name: Run test suite
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: bana-testsuite
+      - name: Also check out branch that contains CSS files
+        run: git fetch --unshallow origin bana
+      - name: Add PIPELINE_VERSION to env
+        run: echo "PIPELINE_VERSION=$(grep 'PIPELINE_VERSION :' Makefile | sed 's/^.*= //g')" >>$GITHUB_ENV
+      - name: Restore or save ~/docker-cache
+        id: docker-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/docker-cache
+          key: docker-cache-$PIPELINE_VERSION
+      - name: Load or save docker image
+        run: |
+          if [ -e ~/docker-cache/pipeline.tar ]; then
+              docker load -i ~/docker-cache/pipeline.tar
+          else
+              docker pull daisyorg/pipeline:$PIPELINE_VERSION
+              mkdir -p ~/docker-cache
+              docker save -o ~/docker-cache/pipeline.tar daisyorg/pipeline:$PIPELINE_VERSION
+          fi
+      - name: Run test suite
+        run: make
+      - name: Store the BRF files
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: BRFs
+          path: 'result/*.brf'

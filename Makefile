@@ -44,8 +44,13 @@ $(BRF) : result/%.brf : %.epub xavier-society.css bana.css | pipeline-up
 
 xavier-society.css : | bana.css
 
+local_bana_branch = $(shell git remote show origin | grep 'pushes to bana ' | sed -e 's/  *//' -e 's/ .*//')
+LOCAL_BANA_BRANCH = $(eval LOCAL_BANA_BRANCH := $$(local_bana_branch))$(LOCAL_BANA_BRANCH)
+
 xavier-society.css bana.css :
-	git checkout bana -- $@
+	BANA_BRANCH=$(LOCAL_BANA_BRANCH);         \
+	BANA_BRANCH=$${BANA_BRANCH:-origin/bana};  \
+	git checkout $${BANA_BRANCH} -- $@;       \
 	git restore --staged $@
 
 .PHONY : get-latest-bana-css
