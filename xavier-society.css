@@ -4,3 +4,25 @@
 	type: literary;
 	contraction: full;
 }
+
+@volume {
+	@begin {
+		content: flow(frontmatter, document);
+	}
+}
+
+.brl-title-page {
+	flow: frontmatter;
+	display: block;
+	page-break-before: always;
+}
+
+.brl-title-page .title,
+.brl-title-page .creator,
+.brl-title-page .volume {
+	text-align: center;
+}
+
+.brl-title-page .volume-number::after {
+	content: counter(volume);
+}
