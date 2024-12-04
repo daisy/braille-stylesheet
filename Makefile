@@ -7,7 +7,7 @@ PORT=8181
 .PHONY : run-testsuite
 run-testsuite : $(BRF)
 
-$(BRF) : result/%.brf : %.epub bana.css | pipeline-up
+$(BRF) : result/%.brf : %.epub xavier-society.css bana.css | pipeline-up
 	test "$$(                                                                   \
 	    docker container inspect -f '{{.State.Running}}' pipeline 2>/dev/null   \
 	)" = true;                                                                  \
@@ -42,13 +42,15 @@ $(BRF) : result/%.brf : %.epub bana.css | pipeline-up
 	    exit 1;                                                                 \
 	fi
 
-bana.css :
+xavier-society.css : | bana.css
+
+xavier-society.css bana.css :
 	git checkout bana -- $@
 	git restore --staged $@
 
 .PHONY : get-latest-bana-css
 get-latest-bana-css :
-	$(MAKE) -B bana.css
+	$(MAKE) -B bana.css xavier-society.css
 
 .PHONY : clean
 clean :
