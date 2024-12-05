@@ -7,7 +7,7 @@ PORT=8181
 .PHONY : run-testsuite
 run-testsuite : $(BRF)
 
-$(BRF) : result/%.brf : %.epub xavier-society.css bana.css | pipeline-up
+$(BRF) : result/%.brf : %.epub xavier-society.css xavier-society-preamble.xhtml bana.css | pipeline-up
 	test "$$(                                                                   \
 	    docker container inspect -f '{{.State.Running}}' pipeline 2>/dev/null   \
 	)" = true;                                                                  \
@@ -33,6 +33,7 @@ $(BRF) : result/%.brf : %.epub xavier-society.css bana.css | pipeline-up
 	           epub3-to-pef --persistent                                        \
 	                        --output "'$${mount_point}'"                        \
 	                        --source "'$${mount_point}/$<'"                     \
+	                        --preamble "'$${mount_point}/$(word 3,$^)'"         \
 	                        --output-file-format "'(locale:en-US)(pad:BEFORE)'" \
 	                        --stylesheet "'$${mount_point}/$(word 2,$^)'";      \
 	if ! [ -e "$@" ]; then                                                      \
@@ -47,7 +48,7 @@ xavier-society.css : | bana.css
 local_bana_branch = $(shell git remote show origin | grep 'pushes to bana ' | sed -e 's/  *//' -e 's/ .*//')
 LOCAL_BANA_BRANCH = $(eval LOCAL_BANA_BRANCH := $$(local_bana_branch))$(LOCAL_BANA_BRANCH)
 
-xavier-society.css bana.css :
+xavier-society.css bana.css xavier-society-preamble.xhtml :
 	BANA_BRANCH=$(LOCAL_BANA_BRANCH);         \
 	BANA_BRANCH=$${BANA_BRANCH:-origin/bana};  \
 	git checkout $${BANA_BRANCH} -- $@;       \
@@ -55,7 +56,7 @@ xavier-society.css bana.css :
 
 .PHONY : get-latest-bana-css
 get-latest-bana-css :
-	$(MAKE) -B bana.css xavier-society.css
+	$(MAKE) -B bana.css xavier-society.css xavier-society-preamble.xhtml
 
 .PHONY : clean
 clean :
