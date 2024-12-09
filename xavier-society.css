@@ -11,6 +11,10 @@
 	}
 }
 
+:root {
+	hyphens: manual;
+}
+
 .brl-title-page {
 	flow: frontmatter;
 	display: block;
@@ -25,4 +29,19 @@
 
 .brl-title-page .volume-number::after {
 	content: counter(volume);
+}
+
+.brl-symbols-list {
+	flow: frontmatter;
+	display: block;
+	page-break-before: always;
+}
+
+.brl-symbols-list h1 {
+	text-transform: uppercase;
+	margin-top: 0;
+}
+
+.brl-symbols-list .symbol {
+	text-transform: none;
 }
