@@ -35,21 +35,15 @@ li {
 ul, ol {
 	margin-top: 1;
 	margin-bottom: 1;
-}
-
-h2 + ul, h2 + ol,
-h3 + ul, h3 + ol,
-h4 + ul, h4 + ol {
-	margin-top: 0;
-}
-
-ul, ol {
 	orphans: 2;
-}
 
-h1 + * > li:first-child,
-h2 + * > li:first-child,
-h3 + * > li:first-child,
-h4 + * > li:first-child {
-	page-break-inside: avoid;
+	h1 + &,
+	h2 + &,
+	h3 + &,
+	h4 + & {
+		margin-top: 0;
+		> li:first-child {
+			page-break-inside: avoid;
+		}
+	}
 }

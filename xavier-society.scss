@@ -1,4 +1,4 @@
-@import url("bana.css");
+@import "bana";
 
 @text-transform {
 	type: literary;
@@ -19,29 +19,29 @@
 	flow: frontmatter;
 	display: block;
 	page-break-before: always;
-}
 
-.brl-title-page .title,
-.brl-title-page .creator,
-.brl-title-page .volume {
-	text-align: center;
-}
+	.title,
+	.creator,
+	.volume {
+		text-align: center;
+	}
 
-.brl-title-page .volume-number::after {
-	content: counter(volume);
+	.volume-number::after {
+		content: counter(volume);
+	}
 }
 
 .brl-symbols-list {
 	flow: frontmatter;
 	display: block;
 	page-break-before: always;
-}
 
-.brl-symbols-list h1 {
-	text-transform: uppercase;
-	margin-top: 0;
-}
+	h1 {
+		text-transform: uppercase;
+		margin-top: 0;
+	}
 
-.brl-symbols-list .symbol {
-	text-transform: none;
+	.symbol {
+		text-transform: none;
+	}
 }
