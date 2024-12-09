@@ -7,7 +7,7 @@ PORT=8181
 .PHONY : run-testsuite
 run-testsuite : $(BRF)
 
-$(BRF) : result/%.brf : %.epub xavier-society.css xavier-society-preamble.xhtml bana.css | pipeline-up
+$(BRF) : result/%.brf : %.epub xavier-society.scss xavier-society-preamble.xhtml bana.scss | pipeline-up
 	test "$$(                                                                   \
 	    docker container inspect -f '{{.State.Running}}' pipeline 2>/dev/null   \
 	)" = true;                                                                  \
@@ -43,12 +43,12 @@ $(BRF) : result/%.brf : %.epub xavier-society.css xavier-society-preamble.xhtml 
 	    exit 1;                                                                 \
 	fi
 
-xavier-society.css : | bana.css
+xavier-society.scss : | bana.scss
 
 local_bana_branch = $(shell git remote show origin | grep 'pushes to bana ' | sed -e 's/  *//' -e 's/ .*//')
 LOCAL_BANA_BRANCH = $(eval LOCAL_BANA_BRANCH := $$(local_bana_branch))$(LOCAL_BANA_BRANCH)
 
-xavier-society.css bana.css xavier-society-preamble.xhtml :
+xavier-society.scss bana.scss xavier-society-preamble.xhtml :
 	BANA_BRANCH=$(LOCAL_BANA_BRANCH);         \
 	BANA_BRANCH=$${BANA_BRANCH:-origin/bana};  \
 	git checkout $${BANA_BRANCH} -- $@;       \
@@ -56,7 +56,7 @@ xavier-society.css bana.css xavier-society-preamble.xhtml :
 
 .PHONY : get-latest-bana-css
 get-latest-bana-css :
-	$(MAKE) -B bana.css xavier-society.css xavier-society-preamble.xhtml
+	$(MAKE) -B bana.scss xavier-society.scss xavier-society-preamble.xhtml
 
 .PHONY : clean
 clean :
