@@ -15,6 +15,17 @@
 	hyphens: manual;
 }
 
+head {
+	title {
+		string-set: title content()
+		            running-header content();
+	}
+
+	creator {
+		string-set: creator content();
+	}
+}
+
 .brl-title-page {
 	flow: frontmatter;
 	display: block;
@@ -24,6 +35,14 @@
 	.creator,
 	.volume {
 		text-align: center;
+	}
+
+	.title span:blank::after {
+		content: string(title);
+	}
+
+	.creator span:blank::after {
+		content: string(creator);
 	}
 
 	.volume-number::after {
