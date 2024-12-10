@@ -1,3 +1,5 @@
+$allow-text-overflow-trimming: true;
+
 @text-transform {
 	system: ueb;
 }
@@ -5,6 +7,9 @@
 @page {
 	size: 40 25;
 	margin-bottom: 0;
+	@top-center {
+		content: string(running-header); // the running-header text must be set by the custom style sheet
+	}
 	@bottom-right {
 		content: "   " counter(page);
 	}
@@ -12,6 +17,9 @@
 
 @page frontmatter {
 	counter-increment: frontmatter-page;
+	@top-center {
+		content: none;
+	}
 	@bottom-right {
 		content: "   p" counter(frontmatter-page);
 	}
