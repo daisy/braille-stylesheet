@@ -27,6 +27,7 @@ $allow-text-overflow-trimming: true;
 
 @volume {
 	@begin {
+		content: flow(frontmatter, document); // the frontmatter content must be set by the custom style sheet
 		page: frontmatter;
 		counter-set: frontmatter-page 1;
 	}
