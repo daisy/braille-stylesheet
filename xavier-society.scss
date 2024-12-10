@@ -5,12 +5,6 @@
 	contraction: full;
 }
 
-@volume {
-	@begin {
-		content: flow(frontmatter, document);
-	}
-}
-
 :root {
 	hyphens: manual;
 }
