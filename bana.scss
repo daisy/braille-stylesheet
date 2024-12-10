@@ -2,6 +2,28 @@
 	system: ueb;
 }
 
+@page {
+	size: 40 25;
+	margin-bottom: 0;
+	@bottom-right {
+		content: "   " counter(page);
+	}
+}
+
+@page frontmatter {
+	counter-increment: frontmatter-page;
+	@bottom-right {
+		content: "   p" counter(frontmatter-page);
+	}
+}
+
+@volume {
+	@begin {
+		page: frontmatter;
+		counter-set: frontmatter-page 1;
+	}
+}
+
 h1 {
 	page-break-before: always;
 	text-align: center;
