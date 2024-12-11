@@ -35,9 +35,16 @@ $allow-text-overflow-trimming: true;
 
 @volume {
 	@begin {
-		content: flow(frontmatter, document); // the frontmatter content must be set by the custom style sheet
+		content: flow(frontmatter, document) // the frontmatter content must be set by the custom style sheet
+		         flow(volume-toc, document);
 		page: frontmatter;
 		counter-set: frontmatter-page 1;
+	}
+}
+@volume:first {
+	@begin {
+		content: flow(frontmatter, document)
+		         flow(document-toc, document);
 	}
 }
 
@@ -99,5 +106,34 @@ ul, ol {
 	string-set: print-page content();
 	&[title] {
 		string-set: print-page attr(title);
+	}
+}
+
+$toc-depth: 2 !default;
+@import "http://www.daisy.org/pipeline/modules/braille/html-to-pef/_generate-toc.scss";
+
+#generated-document-toc,
+#generated-volume-toc {
+	&::-obfl-on-toc-start {
+		content: "Contents";
+		display: block;
+		text-align: center;
+		margin: 0 3 1 3;
+	}
+	&::-obfl-on-volume-start {
+		content: "Volume " counter(-obfl-started-volume-number);
+		display: block;
+		text-align: center;
+		margin: 1 3;
+	}
+	li {
+		-obfl-right-text-indent: 4;
+		a[href]::after {
+			content: " " leader("⠐") " " target-counter(attr(href), page);
+		}
+		br::before { content: " " }
+	}
+	ul, ol {
+		margin: 0;
 	}
 }
