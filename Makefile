@@ -1,5 +1,5 @@
-EPUB := valentin-hauy.epub
-BRF := $(patsubst %.epub,result/%.brf,$(EPUB))
+EPUB := Leonie_Martin.epub
+BRF := $(patsubst %.epub,result/%_vol-1.brf,$(EPUB))
 PIPELINE_VERSION := 1.14.21
 MOUNT_POINT := /mnt
 PORT=8181
@@ -7,7 +7,7 @@ PORT=8181
 .PHONY : run-testsuite
 run-testsuite : $(BRF)
 
-$(BRF) : result/%.brf : %.epub xavier-society.scss xavier-society-preamble.xhtml bana.scss | pipeline-up
+$(BRF) : result/%_vol-1.brf : %.epub xavier-society.scss bana.scss | pipeline-up
 	test "$$(                                                                   \
 	    docker container inspect -f '{{.State.Running}}' pipeline 2>/dev/null   \
 	)" = true;                                                                  \
@@ -33,7 +33,6 @@ $(BRF) : result/%.brf : %.epub xavier-society.scss xavier-society-preamble.xhtml
 	           epub3-to-pef --persistent                                        \
 	                        --output "'$${mount_point}'"                        \
 	                        --source "'$${mount_point}/$<'"                     \
-	                        --preamble "'$${mount_point}/$(word 3,$^)'"         \
 	                        --output-file-format "'(locale:en-US)(pad:BEFORE)'" \
 	                        --stylesheet "'$${mount_point}/$(word 2,$^)'";      \
 	if ! [ -e "$@" ]; then                                                      \
@@ -48,7 +47,7 @@ xavier-society.scss : | bana.scss
 local_bana_branch = $(shell git remote show origin | grep 'pushes to bana ' | sed -e 's/  *//' -e 's/ .*//')
 LOCAL_BANA_BRANCH = $(eval LOCAL_BANA_BRANCH := $$(local_bana_branch))$(LOCAL_BANA_BRANCH)
 
-xavier-society.scss bana.scss xavier-society-preamble.xhtml :
+xavier-society.scss bana.scss :
 	BANA_BRANCH=$(LOCAL_BANA_BRANCH);         \
 	BANA_BRANCH=$${BANA_BRANCH:-origin/bana};  \
 	git checkout $${BANA_BRANCH} -- $@;       \
@@ -56,7 +55,10 @@ xavier-society.scss bana.scss xavier-society-preamble.xhtml :
 
 .PHONY : get-latest-bana-css
 get-latest-bana-css :
-	$(MAKE) -B bana.scss xavier-society.scss xavier-society-preamble.xhtml
+	$(MAKE) -B bana.scss xavier-society.scss
+
+Leonie_Martin.epub :
+	curl -L "https://github.com/PaulXSB/Daisy-Pipeline-UEB/raw/refs/heads/main/Leonie%20Martin/L%C3%A9onie%20Martin%20Remediated.epub" -o $@
 
 .PHONY : clean
 clean :
