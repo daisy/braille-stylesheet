@@ -1,6 +1,6 @@
 @import "bana";
 
-@text-transform {
+@-daisy-text-transform {
 	type: literary;
 	contraction: full;
 }
@@ -55,6 +55,6 @@ head {
 	}
 
 	.symbol {
-		text-transform: none;
+		-daisy-text-transform: none;
 	}
 }

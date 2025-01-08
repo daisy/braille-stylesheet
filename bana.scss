@@ -2,7 +2,7 @@ $allow-text-overflow-trimming: true;
 
 @namespace epub url(http://www.idpf.org/2007/ops);
 
-@text-transform {
+@-daisy-text-transform {
 	system: ueb;
 }
 
@@ -33,18 +33,18 @@ $allow-text-overflow-trimming: true;
 	}
 }
 
-@volume {
+@-daisy-volume {
 	@begin {
-		content: flow(frontmatter, document) // the frontmatter content must be set by the custom style sheet
-		         flow(volume-toc, document);
+		content: -daisy-flow(frontmatter, document) // the frontmatter content must be set by the custom style sheet
+		         -daisy-flow(volume-toc, document);
 		page: frontmatter;
 		counter-set: frontmatter-page 1;
 	}
 }
-@volume:first {
+@-daisy-volume:first {
 	@begin {
-		content: flow(frontmatter, document)
-		         flow(document-toc, document);
+		content: -daisy-flow(frontmatter, document)
+		         -daisy-flow(document-toc, document);
 	}
 }
 
