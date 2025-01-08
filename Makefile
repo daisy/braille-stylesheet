@@ -1,6 +1,6 @@
 EPUB := valentin-hauy.epub
 BRF := $(patsubst %.epub,result/%.brf,$(EPUB))
-PIPELINE_VERSION := 1.14.20
+PIPELINE_VERSION := 1.14.21
 MOUNT_POINT := /mnt
 PORT=8181
 
