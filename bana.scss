@@ -48,7 +48,7 @@ $allow-text-overflow-trimming: true;
 	}
 }
 
-h1 {
+%h1 {
 	page-break-before: always;
 	text-align: center;
 	margin-left: 3;
@@ -56,17 +56,32 @@ h1 {
 	margin-bottom: 1;
 }
 
-h2 {
+%h2 {
 	margin-left: 4;
 }
 
-h3, h4 {
+%h3 {
 	margin-left: 6;
 }
 
-h1, h2, h3, h4 {
+%h1, %h2, %h3 {
 	margin-top: 1;
 	page-break-after: avoid;
+}
+
+$h-mapping: (
+	h1: h1,
+	h2: h2,
+	h3: [h3, h4, h5, h6]
+) !default;
+
+@for $rank from 1 through 3 {
+	@if map-kas-key($h-mapping, h#{$rank}) {
+		$selector: map-get($h-mapping, h#{$rank});
+		#{$selector} {
+			@extend %h#{$rank};
+		}
+	}
 }
 
 p {
@@ -83,10 +98,9 @@ ul, ol {
 	margin-bottom: 1;
 	orphans: 2;
 
-	h1 + &,
-	h2 + &,
-	h3 + &,
-	h4 + & {
+	%h1 + &,
+	%h2 + &,
+	%h3 + & {
 		margin-top: 0;
 		> li:first-child {
 			page-break-inside: avoid;
