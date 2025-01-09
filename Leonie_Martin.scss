@@ -4,7 +4,7 @@ $h-mapping: (
 	h2: h4,
 	h3: [h5, h6]
 );
-$toc-exclude: h1, h2;
+$toc-exclude: h1, h2, 'h3:has(#filepos1838)';
 $toc-depth: 3;
 
 @import "xavier-society";
@@ -23,4 +23,9 @@ h1, h2 {
 	.brl-symbols-list & {
 		display: block;
 	}
+}
+
+// omit print TOC (because we have generated braille TOC)
+body:has(#filepos1838) {
+	display: none;
 }
