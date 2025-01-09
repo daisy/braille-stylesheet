@@ -1,4 +1,5 @@
 EPUB := Leonie_Martin.epub
+CSS := $(patsubst %.epub,%.scss,$(EPUB))
 BRF := $(patsubst %.epub,result/%_vol-1.brf,$(EPUB))
 PIPELINE_VERSION := 1.14.21
 MOUNT_POINT := /mnt
@@ -7,7 +8,7 @@ PORT=8181
 .PHONY : run-testsuite
 run-testsuite : $(BRF)
 
-$(BRF) : result/%_vol-1.brf : %.epub xavier-society.scss bana.scss | pipeline-up
+$(BRF) : result/%_vol-1.brf : %.epub %.scss xavier-society.scss bana.scss | pipeline-up
 	test "$$(                                                                   \
 	    docker container inspect -f '{{.State.Running}}' pipeline 2>/dev/null   \
 	)" = true;                                                                  \
@@ -42,6 +43,7 @@ $(BRF) : result/%_vol-1.brf : %.epub xavier-society.scss bana.scss | pipeline-up
 	    exit 1;                                                                 \
 	fi
 
+$(CSS) : | xavier-society.scss
 xavier-society.scss : | bana.scss
 
 local_bana_branch = $(shell git remote show origin | grep 'pushes to bana ' | sed -e 's/  *//' -e 's/ .*//')
