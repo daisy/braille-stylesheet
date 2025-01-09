@@ -1,1 +1,26 @@
+// define heading structure
+$h-mapping: (
+	h1: [ h1, h2, h3 ],
+	h2: h4,
+	h3: [h5, h6]
+);
+$toc-exclude: h1, h2;
+$toc-depth: 3;
+
 @import "xavier-society";
+
+// remove indentation from li elements that correspond with omitted h1 and h2 in TOC
+#generated-document-toc,
+#generated-volume-toc {
+	li:not(:has(> a)) {
+		margin-left: 0;
+	}
+}
+
+// omit title and subtitle (because already on title page)
+h1, h2 {
+	display: none;
+	.brl-symbols-list & {
+		display: block;
+	}
+}
