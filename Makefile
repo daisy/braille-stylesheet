@@ -35,7 +35,9 @@ $(BRF) : result/%_vol-1.brf : %.epub %.scss xavier-society.scss bana.scss | pipe
 	                        --output "'$${mount_point}'"                        \
 	                        --source "'$${mount_point}/$<'"                     \
 	                        --output-file-format "'(locale:en-US)(pad:BEFORE)'" \
-	                        --stylesheet "'$${mount_point}/$(word 2,$^)'";      \
+	                        --stylesheet "'$${mount_point}/$(word 2,$^)'"       \
+	                        --stylesheet-parameters "'(reuse-print-toc: true)'" \
+	                        ;                                                   \
 	if ! [ -e "$@" ]; then                                                      \
 	    if [ $${docker_mode} = 0 ]; then                                        \
 	        docker logs pipeline;                                               \

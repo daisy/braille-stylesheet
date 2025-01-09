@@ -4,8 +4,67 @@ $h-mapping: (
 	h2: h4,
 	h3: [h5, h6]
 );
-$toc-exclude: h1, h2, 'h3:has(#filepos1838)';
-$toc-depth: 3;
+
+/**
+ * @brief Reuse print TOC
+ *
+ * Reuse existing TOC instead of generating a new one
+ */
+$reuse-print-toc: false !default;
+
+// define these outside @if to make them in scope for @import below
+$toc-exclude: ();
+$toc-depth: 2;
+
+@if $reuse-print-toc == true or $reuse-print-toc == both {
+	body:has(#filepos1838) {
+		display: -obfl-toc;
+		page: preliminary; // not transcriber generated
+		-obfl-toc-range: document;
+		-daisy-flow: document-toc;
+		&::duplicate {
+			display: -obfl-toc;
+			page: preliminary;
+			-obfl-toc-range: volume;
+			-daisy-flow: volume-toc;
+		}
+		&::-obfl-on-toc-start,
+		&::duplicate::-obfl-on-toc-start {
+			content: "Contents";
+			display: block;
+			text-align: center;
+			margin: 0 3 1 3;
+		}
+		&::-obfl-on-volume-start {
+			content: "Volume " counter(-obfl-started-volume-number);
+			display: block;
+			text-align: center;
+			margin: 1 3;
+		}
+		h3 {
+			display: none;
+		}
+		p {
+			margin-left: 2;
+			text-indent: -2;
+			-obfl-right-text-indent: 4;
+			a[href]::after {
+				content: " " leader("⠐") " " target-counter(attr(href), page);
+			}
+		}
+	}
+} @else {
+	body:has(#filepos1838) {
+		display: none;
+	}
+}
+@if $reuse-print-toc == false or $reuse-print-toc == both {
+	$toc-exclude: h1, h2, 'h3:has(#filepos1838)';
+	$toc-depth: 3;
+} @else {
+	$toc-depth: 0;
+
+}
 
 @import "xavier-society";
 
@@ -23,9 +82,4 @@ h1, h2 {
 	.brl-symbols-list & {
 		display: block;
 	}
-}
-
-// omit print TOC (because we have generated braille TOC)
-body:has(#filepos1838) {
-	display: none;
 }
