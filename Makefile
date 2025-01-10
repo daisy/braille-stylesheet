@@ -70,7 +70,8 @@ clean :
 pipeline-up :
 	if ! curl localhost:$(PORT)/ws/alive >/dev/null 2>/dev/null;        \
 	then                                                                \
-	    docker run --name pipeline                                      \
+	    docker run --platform linux/amd64                               \
+	               --name pipeline                                      \
 	               -d                                                   \
 	               -e PIPELINE2_WS_HOST=0.0.0.0                         \
 	               -e PIPELINE2_WS_PORT=$(PORT)                         \
