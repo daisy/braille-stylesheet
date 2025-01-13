@@ -17,7 +17,9 @@ head {
 }
 
 .brl-title-page {
-	flow: frontmatter;
+	flow: transcriber-generated;
+	page: transcriber-generated;
+	counter-set: transcriber-generated-page 1;
 	display: block;
 	page-break-before: always;
 
@@ -41,7 +43,8 @@ head {
 }
 
 .brl-symbols-list {
-	flow: frontmatter;
+	flow: transcriber-generated;
+	page: transcriber-generated;
 	display: block;
 	page-break-before: always;
 
