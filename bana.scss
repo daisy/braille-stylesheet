@@ -20,8 +20,8 @@ $allow-text-overflow-trimming: true;
 	}
 }
 
-@page frontmatter {
-	counter-increment: frontmatter-page;
+@page transcriber-generated {
+	counter-increment: transcriber-generated-page;
 	@top-center {
 		content: none;
 	}
@@ -29,21 +29,35 @@ $allow-text-overflow-trimming: true;
 		content: none;
 	}
 	@bottom-right {
-		content: "   p" counter(frontmatter-page);
+		content: "   t" counter(transcriber-generated-page);
+	}
+}
+
+@page preliminary {
+	counter-increment: preliminary-page;
+	@top-center {
+		content: none;
+	}
+	@top-right {
+		content: none;
+	}
+	@bottom-right {
+		content: "   p" counter(preliminary-page);
 	}
 }
 
 @-daisy-volume {
 	@begin {
-		content: -daisy-flow(frontmatter, document) // the frontmatter content must be set by the custom style sheet
-		         -daisy-flow(volume-toc, document);
-		page: frontmatter;
-		counter-set: frontmatter-page 1;
+		content: -daisy-flow(transcriber-generated, document) // the transcriber generated and other preliminary
+		         -daisy-flow(volume-toc, document)            // content must be set by the custom style sheet,
+		         -daisy-flow(preliminary, document);          // and must be given the corresponding page style
+		counter-set: transcriber-generated-page 1
+		             preliminary-page 1;
 	}
 }
 @-daisy-volume:first {
 	@begin {
-		content: -daisy-flow(frontmatter, document)
+		content: -daisy-flow(transcriber-generated, document)
 		         -daisy-flow(document-toc, document);
 	}
 }
@@ -128,6 +142,7 @@ $toc-depth: 2 !default;
 
 #generated-document-toc,
 #generated-volume-toc {
+	page: transcriber-generated;
 	&::-obfl-on-toc-start {
 		content: "Contents";
 		display: block;
