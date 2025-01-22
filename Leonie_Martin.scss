@@ -83,3 +83,13 @@ h1, h2 {
 		display: block;
 	}
 }
+
+// add title pages, foreword and introduction to preliminary pages
+body:has(img[alt=cover]),
+body:has(#calibre_pb_0),
+body:has(#calibre_pb_1),
+body:has(#calibre_pb_2),
+body:has(#filepos2860),
+body:has(#filepos7269) {
+	page: preliminary;
+}
